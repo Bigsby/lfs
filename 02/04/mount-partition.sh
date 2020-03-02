@@ -29,6 +29,5 @@ fdisk $1
 mkfs -t ext4 $1$2
 mkdir $3
 
-nano fstab
-# /dev/sdb1       /mnt/lfs       ext4     defaults       0     0
+echo "/dev/sdb1       /mnt/lfs       ext4     defaults       0     0" | tee -a /etc/fstab
 mount -a
