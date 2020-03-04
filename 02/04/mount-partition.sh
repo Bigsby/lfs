@@ -1,33 +1,13 @@
-#!/bin/bash
+sudo fdisk /dev/sdb << end
+n
+p
+1
 
-show_usage() {
-    echo "Usage: $0 <disk> <partition> <mountingpoint>"
-    echo ""
-    echo "E.g.:"
-    echo "$0 sdb 1 /mnt/lfs"
-    exit
-}
 
-if [ "$#" -ne "3" ]; 
-    then
-        show_usage
-fi
+w
+end
 
-disk=$1
-partition=$2
-mount_point=$3
-
-echo "Checking params..."
-
-blk=$(lsblk -l)
-
-echo "Setting up $1$2 on $3"
-
-fdisk $1
-# n and all defaults
-
-mkfs -t ext4 $1$2
-mkdir $3
-
-echo "/dev/sdb1       /mnt/lfs       ext4     defaults       0     0" | tee -a /etc/fstab
-mount -a
+sudo mkfs -v -t ext4 /dev/sdb1
+sudo mkdir -pv /mnt/lfs
+sudo echo -e "\n/dev/sdb1\t/mnt/lfs\text4\tdefaults\t0\t0\n" >> /etc/fstab
+sudo mount -a
